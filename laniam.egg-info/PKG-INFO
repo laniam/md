@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: laniam
+Version: 1.0.1
+Summary: python project for finance: realtime data collection, analyze, algorithmic trading
+Home-page: UNKNOWN
+Author: Ardhani
+Author-email: ardhani@laniam.com
+License: LANIAM
+Description: UNKNOWN
+Keywords: python,Finance,Algorithm,Trading,Realtime,QuantLib,pydispather
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Laniam License
