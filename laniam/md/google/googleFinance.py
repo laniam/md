@@ -34,20 +34,49 @@ class GoogleFinance(object):
         elif symbol:
             self.symbol = symbol
 
-        url = self.__requestUrl__(symbol, interval, period)
-        print(url)
+        url = self.__requestUrl__(self.symbol, interval, period)
         try:
             data = urllib2.urlopen(url).read()
             data = data.split("\n")
             data = data[7:-1]
             if  data:
-                fileHandler = open(symbol+".csv",'a')
-                for quoteLine in data:
-                    fileHandler.write(quoteLine)
-                    fileHandler.write("\n")
-                fileHandler.close()
-                return True
+                for i  in range(len(data)):
+                    data[i] = data[i][1:]
+                return data
             else:
-                return False
+                return []
         except Exception, err:
             print(err)
+
+    def writeQuoteToFile(self, symbol=None, interval=61, period="15m"):
+        """
+        """
+        if self.symbol or symbol:
+            if not self.symbol:
+                self.symbol = symbol
+        else:
+            raise TypeError("symbol can't be null")
+        
+        lastIndex = self.__getLastIndex()
+        data = self.getQuote(self.symbol, interval, period)
+        file_handler = open(self.symbol+".csv", "a")
+        for row in data:
+            rowValues = row.split(',') 
+            index = int(rowValues[0])
+            if index > lastIndex:
+                file_handler.write(row+'\n')
+        file_handler.close()
+
+    def __getLastIndex(self):
+        """
+        """
+        try:
+            file_handler  = open(self.symbol+".csv")
+            file_content  = file_handler.read()
+            splitLines    = file_content.split('\n')
+            lastIndexLine = splitLines[-2] 
+            lastIndex     = int(lastIndexLine.split(',')[0])
+            file_handler.close()
+        except:
+            lastIndex     = 0
+        return lastIndex 
